@@ -61,6 +61,14 @@ RENDER_DEPLOY_HOOK=your_render_deploy_hook_url
 - Push to GitHub Container Registry
 - Trigger khi có release mới
 
+### 4. `security.yml` - Security Scanning
+- **Trivy**: Vulnerability scanning (filesystem & Docker)
+- **CodeQL**: Static code analysis
+- **Safety**: Python dependency security check
+- **Bandit**: Python security linter
+- **TruffleHog**: Secret scanning
+- Chạy tự động mỗi tuần và khi có push/PR
+
 ## 🏃 Workflow Steps
 
 ### 1. Test Phase
