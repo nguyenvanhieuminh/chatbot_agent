@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   pathvn:
-    image: ghcr.io/nguyenvanhieuminh/pathvn:latest
+    image: ghcr.io/nguyenvanhieuminh/chatbot_agent:latest
     container_name: pathvn-app
     ports:
       - "3001:3001"
