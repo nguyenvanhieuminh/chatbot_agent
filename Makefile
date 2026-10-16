@@ -6,11 +6,14 @@ help: ## Show this help message
 
 install: ## Install dependencies
 	pip install -r requirements.txt
-	pip install pytest pytest-asyncio pytest-cov httpx black flake8 mypy
 
 install-dev: ## Install all dependencies including dev tools
-	pip install -r requirements.txt
-	pip install pytest pytest-asyncio pytest-cov httpx black flake8 mypy safety
+	pip install -r requirements-dev.txt
+
+setup-hooks: ## Setup pre-commit hooks
+	pip install pre-commit
+	pre-commit install
+	@echo "✅ Pre-commit hooks installed! Code will be auto-formatted before each commit."
 
 run: ## Run the application
 	python main.py
@@ -71,6 +74,12 @@ ci: format-check lint type-check test ## Run all CI checks locally
 
 all: install format lint type-check test ## Install, format, lint, type-check and test
 
-dev-setup: install-dev ## Setup development environment
-	@echo "Development environment setup complete!"
-	@echo "Run 'make run-reload' to start development server"
+dev-setup: install-dev setup-hooks ## Setup development environment
+	@echo ""
+	@echo "✅ Development environment setup complete!"
+	@echo ""
+	@echo "📝 Next steps:"
+	@echo "  1. Run 'make run-reload' to start development server"
+	@echo "  2. Code will be auto-formatted before each commit"
+	@echo "  3. Use 'make test' to run tests"
+	@echo ""

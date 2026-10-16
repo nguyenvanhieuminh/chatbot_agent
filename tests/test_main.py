@@ -1,6 +1,7 @@
 """
 Unit tests cho FastAPI Chatbot
 """
+
 import pytest
 from fastapi.testclient import TestClient
 from main import app, generate_bot_response

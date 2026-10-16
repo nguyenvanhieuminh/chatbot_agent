@@ -9,6 +9,7 @@ app = FastAPI(title="Chatbot Web App")
 
 templates = Jinja2Templates(directory="templates")
 
+
 # Lưu trữ các kết nối WebSocket
 class ConnectionManager:
     def __init__(self):
@@ -24,15 +25,15 @@ class ConnectionManager:
     async def send_message(self, message: str, websocket: WebSocket):
         await websocket.send_text(message)
 
+
 manager = ConnectionManager()
+
 
 @app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     """Trang chủ - giao diện chatbot"""
-    return templates.TemplateResponse(
-        "chat.html",
-        {"request": request, "title": "Chatbot"}
-    )
+    return templates.TemplateResponse("chat.html", {"request": request, "title": "Chatbot"})
+
 
 @app.websocket("/ws/chat")
 async def websocket_chat(websocket: WebSocket):
@@ -52,19 +53,24 @@ async def websocket_chat(websocket: WebSocket):
             response = {
                 "message": bot_response,
                 "timestamp": datetime.now().strftime("%H:%M"),
-                "sender": "bot"
+                "sender": "bot",
             }
             await manager.send_message(json.dumps(response), websocket)
 
     except WebSocketDisconnect:
         manager.disconnect(websocket)
 
+
 def generate_bot_response(user_message: str) -> str:
     """Tạo phản hồi của bot dựa trên tin nhắn người dùng"""
     user_message_lower = user_message.lower()
 
     # Các câu trả lời mẫu
-    if "xin chào" in user_message_lower or "hello" in user_message_lower or "hi" in user_message_lower:
+    if (
+        "xin chào" in user_message_lower
+        or "hello" in user_message_lower
+        or "hi" in user_message_lower
+    ):
         return "Xin chào! Tôi là chatbot AI. Tôi có thể giúp gì cho bạn? 😊"
 
     elif "tên" in user_message_lower and "gì" in user_message_lower:
@@ -74,7 +80,9 @@ def generate_bot_response(user_message: str) -> str:
         return "Tôi vẫn khỏe và sẵn sàng trò chuyện với bạn! Cảm ơn đã hỏi 💚"
 
     elif "giúp" in user_message_lower or "help" in user_message_lower:
-        return "Tôi có thể trả lời các câu hỏi cơ bản, trò chuyện với bạn. Hãy thử hỏi tôi điều gì đó!"
+        return (
+            "Tôi có thể trả lời các câu hỏi cơ bản, trò chuyện với bạn. Hãy thử hỏi tôi điều gì đó!"
+        )
 
     elif "bye" in user_message_lower or "tạm biệt" in user_message_lower:
         return "Tạm biệt! Hẹn gặp lại bạn sau! 👋"
@@ -93,13 +101,17 @@ def generate_bot_response(user_message: str) -> str:
             f"Hmm, về '{user_message}' à? Thú vị đấy!",
         ]
         import random
+
         return random.choice(responses)
+
 
 @app.get("/api/health")
 async def health_check():
     """Kiểm tra trạng thái server"""
     return {"status": "healthy", "timestamp": datetime.now().isoformat()}
 
+
 if __name__ == "__main__":
     import uvicorn
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
