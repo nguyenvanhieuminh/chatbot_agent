@@ -61,9 +61,27 @@ docker run -p 8000:8000 fastapi-chatbot
 docker-compose up -d
 ```
 
-### ☁️ Deploy lên Cloud
+### ☁️ Deploy lên AWS EC2
 
-Xem chi tiết trong [CI-CD-SETUP.md](CI-CD-SETUP.md)
+**Quick Start (5 phút):**
+```bash
+# 1. Upload setup script
+scp -i your-key.pem scripts/setup-ec2.sh ubuntu@EC2_IP:~
+
+# 2. SSH và chạy script
+ssh -i your-key.pem ubuntu@EC2_IP
+bash setup-ec2.sh
+
+# 3. Configure Security Group (port 22, 8000)
+# 4. Add GitHub Secrets (SERVER_HOST, SERVER_USER, SERVER_SSH_KEY)
+# 5. Push code → Auto deploy! 🚀
+```
+
+**Documentation:**
+- ⚡ [Quick Deploy Guide](QUICK-DEPLOY.md) - 5 phút setup
+- 📖 [Detailed AWS EC2 Guide](docs/AWS-EC2-DEPLOY.md) - Full instructions
+- ✅ [Deployment Checklist](docs/DEPLOY-CHECKLIST.md) - Step-by-step
+- 🔧 [CI/CD Setup](CI-CD-SETUP.md) - General deployment options
 
 ## Tính năng
 
