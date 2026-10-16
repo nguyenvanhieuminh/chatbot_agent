@@ -1,240 +1,208 @@
-# 🤖 FastAPI Chatbot Web App
+# 🛤️ PathVN — Nền tảng học tập từ phổ thông đến chuyên môn
 
-[![CI/CD Pipeline](https://github.com/YOUR_USERNAME/YOUR_REPO/workflows/CI%2FCD%20Pipeline/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions)
-[![Run Tests](https://github.com/YOUR_USERNAME/YOUR_REPO/workflows/Run%20Tests/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions)
-[![Python 3.9+](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/downloads/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-0.115.0-009688.svg)](https://fastapi.tiangolo.com)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+**Full-stack React + Node.js + SQLite** với Admin CMS đầy đủ chức năng.  
+Học phổ thông (lớp 1-12), kỹ năng chuyên môn (lập trình, design, data...) và blog.
 
-Một ứng dụng web chatbot hiện đại sử dụng FastAPI và WebSocket với CI/CD pipeline hoàn chỉnh.
+**Tech Stack:** React + Vite + Tailwind CSS v4 | Express + better-sqlite3
 
-## 📸 Screenshots
-
-![Chatbot Interface](https://via.placeholder.com/800x400/667eea/ffffff?text=Chatbot+Interface)
-
-## 🚀 Quick Start
-
-### Cài đặt Local
-
-1. Clone repository:
-```bash
-git clone https://github.com/YOUR_USERNAME/YOUR_REPO.git
-cd YOUR_REPO
-```
-
-2. Tạo virtual environment (khuyến nghị):
-```bash
-python -m venv venv
-source venv/bin/activate  # Trên macOS/Linux
-# hoặc
-venv\Scripts\activate  # Trên Windows
-```
-
-2. Cài đặt dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-3. Chạy ứng dụng:
+## Chạy dự án
 
 ```bash
-python main.py
+npm install
+npm run dev      # Chạy cả API + Frontend
+                 # API:  http://localhost:3001/api
+                 # Web:  http://localhost:5173
+                 # Admin: http://localhost:5173/#/admin/login
+
+npm run build    # Xuất production build
+npm start        # Chạy production (API + static files)
 ```
 
-Hoặc dùng uvicorn với auto-reload:
-```bash
-uvicorn main:app --reload --host 0.0.0.0 --port 8000
-```
-
-4. Mở trình duyệt: **http://localhost:8000**
-
-### 🐳 Docker
-
-```bash
-# Build image
-docker build -t fastapi-chatbot .
-
-# Run container
-docker run -p 8000:8000 fastapi-chatbot
-
-# Hoặc dùng docker-compose
-docker-compose up -d
-```
-
-### ☁️ Deploy lên AWS EC2
-
-**Quick Start (5 phút):**
-```bash
-# 1. Upload setup script
-scp -i your-key.pem scripts/setup-ec2.sh ubuntu@EC2_IP:~
-
-# 2. SSH và chạy script
-ssh -i your-key.pem ubuntu@EC2_IP
-bash setup-ec2.sh
-
-# 3. Configure Security Group (port 22, 8000)
-# 4. Add GitHub Secrets (SERVER_HOST, SERVER_USER, SERVER_SSH_KEY)
-# 5. Push code → Auto deploy! 🚀
-```
-
-**Documentation:**
-- ⚡ [Quick Deploy Guide](QUICK-DEPLOY.md) - 5 phút setup
-- 📖 [Detailed AWS EC2 Guide](docs/AWS-EC2-DEPLOY.md) - Full instructions
-- ✅ [Deployment Checklist](docs/DEPLOY-CHECKLIST.md) - Step-by-step
-- 🔧 [CI/CD Setup](CI-CD-SETUP.md) - General deployment options
+**Đăng nhập admin lần đầu**: Xem terminal để lấy username/password được generate tự động.
 
 ## Tính năng
 
-- 💬 Chat real-time với WebSocket
-- 🤖 Bot tự động trả lời thông minh
-- 📱 Giao diện responsive, đẹp mắt
-- ⚡ Kết nối WebSocket tự động reconnect
-- 🎨 Hiệu ứng animation mượt mà
+### 👨‍🎓 Người học
+| Tính năng | Đường dẫn | Ghi chú |
+|---|---|---|
+| Tổng hợp lý thuyết | `/bai-hoc/:id` | Công thức KaTeX, bảng so sánh, ví dụ mẫu, cảnh báo lỗi hay gặp |
+| Flashcard | `/flashcard` | Lật thẻ 3D, đánh dấu *đã nhớ / cần ôn*, trộn thẻ; `Space` lật, `←` `→` chuyển |
+| Trắc nghiệm | `/trac-nghiem` | Chấm điểm, hiện đáp án + giải thích, lưu điểm tốt nhất |
+| Ghi chú cá nhân | trong bài học | Auto-save sau 600ms, lưu localStorage |
+| Tiến độ | `/tien-do` | Vòng tiến độ, chuỗi ngày học, xuất/nhập JSON |
+| Tìm kiếm | `Ctrl/Cmd + K` | Full-text, **bỏ dấu vẫn tìm được** (gõ `dao ham` → `đạo hàm`) |
+| Dark mode | toggle navbar | Theo hệ thống hoặc tùy chỉnh |
 
-## API Endpoints
+### 🔐 Admin CMS
+| Tính năng | Đường dẫn | Ghi chú |
+|---|---|---|
+| Dashboard | `/admin/dashboard` | Thống kê + lịch sử hoạt động |
+| Tạo khung nội dung | `/admin/khung-noi-dung` | Dán mục lục → tạo hàng loạt chương + bài nháp |
+| Quản lý bài học | `/admin/bai-hoc` | Lọc, tìm, đổi trạng thái, soạn nội dung |
+| Quản lý môn học | `/admin/mon-hoc` | Sửa tên, icon, màu, khối lớp |
+| Import/Export | `/admin/import-export` | Sao lưu / khôi phục JSON |
+| Đổi mật khẩu | `/admin/tai-khoan` | Có validation |
 
-- `GET /` - Trang chủ chatbot
-- `WS /ws/chat` - WebSocket endpoint cho chat
-- `GET /api/health` - Kiểm tra trạng thái server
-- `GET /docs` - Swagger UI documentation
+📖 **Chi tiết**: Xem [DESIGN.md](DESIGN.md) — phân cấp nội dung, cách admin thêm nội dung, API.
 
-## Cấu trúc project
+## Cấu trúc
 
 ```
-web_study/
-├── main.py              # File chính - FastAPI app với WebSocket
-├── requirements.txt     # Dependencies
-├── templates/           # Thư mục chứa HTML templates
-│   └── chat.html       # Giao diện chatbot
-└── README.md           # File hướng dẫn này
+web/
+├── shared/
+│   └── curriculum.js       # Cấp học, khối lớp, danh mục môn — dùng chung server + client
+├── server/
+│   ├── routes/             # public.js, auth.js, admin.js
+│   ├── db.js               # Schema, migration, backfill chương
+│   ├── auth.js             # Hash scrypt + session
+│   ├── validate.js         # Làm sạch & kiểm tra payload
+│   ├── seed.js             # Dữ liệu mẫu
+│   └── index.js            # Entry point
+├── src/
+│   ├── api/client.js       # Fetch wrapper cho toàn bộ endpoint
+│   ├── context/            # Theme, Progress, Auth, Content
+│   ├── components/
+│   │   └── admin/          # BlockEditor, CardQuizEditor
+│   ├── lib/
+│   │   ├── parseContent.js # Cú pháp "dán hàng loạt" ↔ blocks
+│   │   ├── search.js       # Tìm kiếm bỏ dấu tiếng Việt
+│   │   └── palette.js      # Bảng màu môn học
+│   └── pages/              # Trang người học + 8 trang admin
+└── data/hoctap.db          # SQLite (gitignored)
 ```
 
-## 🧪 Testing
+## Thêm nội dung mới
+
+Mở file môn trong `src/data/`, thêm một object vào mảng `lessons`:
+
+```js
+{
+  id: 'toan.ten-bai',          // phải là duy nhất toàn app
+  title: 'Tên bài',
+  grade: 12,
+  minutes: 15,
+  summary: 'Mô tả ngắn hiện trên thẻ bài học.',
+  keywords: ['từ khoá để tìm kiếm'],
+  blocks: [ /* xem các loại block bên dưới */ ],
+  flashcards: [{ front: '...', back: '...' }],
+  quiz: [{ question: '...', options: ['A','B','C','D'], answer: 0, explain: '...' }],
+}
+```
+
+Muốn thêm **môn mới**: tạo file mới trong `src/data/` theo cùng khuôn (`id`, `name`, `short`, `icon`, `accent`, `tint`, `description`, `lessons`) rồi import vào `src/data/index.js`.
+
+### Các loại block dùng được trong `blocks`
+
+```js
+{ type: 'heading', text: '1. Tiêu đề' }
+{ type: 'text',    text: 'Đoạn văn, hỗ trợ **in đậm** và công thức $x^2$.' }
+{ type: 'list',    items: ['gạch đầu dòng', '...'] }
+{ type: 'formula', latex: String.raw`\frac{a}{b}`, caption: 'chú thích' }
+{ type: 'table',   headers: ['A','B'], rows: [['1','2']] }
+{ type: 'note',    variant: 'info' | 'tip' | 'warn', title: '...', text: '...' }
+{ type: 'steps',   title: '...', items: ['bước 1', 'bước 2'] }
+{ type: 'compare', left: { title, items }, right: { title, items } }
+{ type: 'example', problem: '...', solution: ['bước giải 1', '...'] }
+```
+
+Trong mọi trường text: `$...$` render công thức toán (KaTeX), `**...**` in đậm, `*...*` in nghiêng.
+
+## Deploy
+
+### Production với cả API + Frontend
+```bash
+npm run build        # Build frontend vào dist/
+node server/index.js # Serve API + static files
+# hoặc
+npm start
+```
+
+Deploy lên VPS/cloud:
+- Upload toàn bộ project
+- Install dependencies: `npm install --production`
+- Chạy: `PORT=3000 node server/index.js`
+- Dùng PM2 để keep-alive: `pm2 start server/index.js --name hoctap`
+
+### Static-only (không có admin)
+Build frontend: `npm run build` rồi deploy thư mục `dist/` lên static host (GitHub Pages, Netlify, Vercel, Cloudflare Pages).  
+⚠️ **Lưu ý**: Static mode không có backend nên không dùng được admin CMS.
+
+## Tech Stack
+
+- **Frontend**: React 18, Vite, Tailwind CSS v4, React Router
+- **Backend**: Node.js, Express, `node:sqlite` (built-in, không cần native module)
+- **Auth**: Session-based với httpOnly cookie
+- **Math rendering**: KaTeX
+- **Styling**: Tailwind CSS v4 (CSS-first config)
+
+## Documentation
+
+- [README.md](README.md) — Overview (file này)
+- [DESIGN.md](DESIGN.md) — Phân cấp nội dung, database, luồng quản trị, API reference
+
+## 🚀 Deployment với Docker
+
+### Build Docker Image
 
 ```bash
-# Install test dependencies
-pip install pytest pytest-asyncio pytest-cov httpx
-
-# Run tests
-pytest tests/ -v
-
-# Run with coverage
-pytest tests/ --cov=. --cov-report=html
-
-# View coverage report
-open htmlcov/index.html
+docker build -t pathvn:latest .
 ```
 
-## 🛠️ CI/CD Pipeline
+### AWS EC2 Deployment
 
-Project này có complete CI/CD pipeline với GitHub Actions:
-
-- ✅ **Automated Testing** - Test trên Python 3.9-3.12
-- 🎨 **Code Quality** - Black, Flake8, Mypy
-- 🐳 **Docker Build** - Multi-platform images
-- 🚀 **Auto Deploy** - Deploy to production
-- 🔒 **Security Scan** - Trivy vulnerability scanning
-- 📦 **Dependency Updates** - Dependabot
-
-Xem chi tiết setup trong [CI-CD-SETUP.md](CI-CD-SETUP.md)
-
-## 📁 Project Structure
-
-```
-web_study/
-├── .github/
-│   ├── workflows/
-│   │   ├── ci-cd.yml           # Main CI/CD pipeline
-│   │   ├── test.yml            # Test matrix
-│   │   └── docker-publish.yml  # Docker publishing
-│   └── dependabot.yml          # Dependency updates
-├── templates/
-│   └── chat.html               # Chatbot UI
-├── tests/
-│   └── test_main.py           # Unit tests
-├── main.py                    # FastAPI application
-├── requirements.txt           # Python dependencies
-├── Dockerfile                 # Docker image config
-├── docker-compose.yml         # Docker Compose config
-├── pyproject.toml            # Tool configs
-├── .gitignore                # Git ignore rules
-├── .dockerignore             # Docker ignore rules
-├── CI-CD-SETUP.md            # CI/CD documentation
-└── README.md                 # This file
-```
-
-## 🔧 Development
-
-### Code Formatting
+1. **Setup EC2**:
 ```bash
-pip install black
-black .
+# SSH vào EC2
+ssh -i key-ec2.pem ec2-user@YOUR_IP
+
+# Tạo thư mục
+sudo mkdir -p /opt/pathvn
+cd /opt/pathvn
+
+# Tạo docker-compose.yml
+sudo tee docker-compose.yml > /dev/null << 'COMPOSE'
+version: '3.8'
+services:
+  pathvn:
+    image: ghcr.io/YOUR_USERNAME/YOUR_REPO:latest
+    ports:
+      - "3001:3001"
+    volumes:
+      - ./data:/app/data
+    restart: unless-stopped
+    environment:
+      - NODE_ENV=production
+COMPOSE
 ```
 
-### Linting
+2. **Login GitHub Container Registry**:
 ```bash
-pip install flake8
-flake8 .
+echo YOUR_GITHUB_TOKEN | docker login ghcr.io -u YOUR_USERNAME --password-stdin
 ```
 
-### Type Checking
+3. **Start**:
 ```bash
-pip install mypy
-mypy main.py
+docker-compose pull
+docker-compose up -d
 ```
 
-## 📚 API Documentation
+### GitHub Actions CI/CD
 
-Khi app đang chạy, truy cập:
+Thêm secrets vào **Settings → Secrets → Actions**:
+- `SERVER_HOST`: EC2 IP
+- `SERVER_USER`: ec2-user
+- `SERVER_SSH_KEY`: Nội dung file .pem
 
-- **Swagger UI**: http://localhost:8000/docs
-- **ReDoc**: http://localhost:8000/redoc
+Push lên `main` branch sẽ tự động deploy!
 
-## 🌟 Roadmap
+### Security Group (AWS)
 
-### Phase 1: Core Features ✅
-- [x] WebSocket chat
-- [x] Responsive UI
-- [x] Bot responses
+Mở port:
+- **22**: SSH
+- **3001**: PathVN app
 
-### Phase 2: CI/CD ✅
-- [x] GitHub Actions
-- [x] Docker support
-- [x] Automated tests
+Truy cập: `http://YOUR_EC2_IP:3001`
 
-### Phase 3: AI Integration 🚧
-- [ ] OpenAI GPT API
-- [ ] Google Gemini API
-- [ ] Anthropic Claude API
-- [ ] Local LLM với Ollama
+---
 
-### Phase 4: Advanced Features 📋
-- [ ] User authentication
-- [ ] Chat history database
-- [ ] Multi-user rooms
-- [ ] File upload
-- [ ] Voice chat
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
-## 📝 License
-
-This project is licensed under the MIT License.
-
-## 👨‍💻 Author
-
-**Your Name**
-- GitHub: [@yourusername](https://github.com/yourusername)
-- Email: your.email@example.com
-
-## 🙏 Acknowledgments
-
-- [FastAPI](https://fastapi.tiangolo.com/) - Modern web framework
-- [Uvicorn](https://www.uvicorn.org/) - ASGI server
-- [GitHub Actions](https://github.com/features/actions) - CI/CD platform
+Xem [CI-CD-SETUP.md](CI-CD-SETUP.md) để biết chi tiết.

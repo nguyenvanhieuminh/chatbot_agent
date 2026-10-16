@@ -1,33 +1,52 @@
-# Multi-stage build để giảm kích thước image
-FROM python:3.11-slim as builder
+# Multi-stage build for PathVN (React + Vite + Express)
+FROM node:22-alpine AS builder
 
 WORKDIR /app
+
+# Copy package files
+COPY package*.json ./
 
 # Install dependencies
-COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN npm ci --only=production && \
+    npm cache clean --force
 
-# Final stage
-FROM python:3.11-slim
+# Copy source code
+COPY . .
+
+# Build frontend
+RUN npm run build
+
+# Production stage
+FROM node:22-alpine
 
 WORKDIR /app
 
-# Copy dependencies from builder
-COPY --from=builder /root/.local /root/.local
+# Copy package files and install production dependencies only
+COPY package*.json ./
+RUN npm ci --only=production && \
+    npm cache clean --force
 
-# Copy application code
-COPY main.py .
-COPY templates/ templates/
+# Copy built frontend from builder
+COPY --from=builder /app/dist ./dist
 
-# Make sure scripts in .local are usable
-ENV PATH=/root/.local/bin:$PATH
+# Copy server code and shared modules
+COPY server/ ./server/
+COPY shared/ ./shared/
+COPY setup-admin.cjs ./
+
+# Create data directory for SQLite
+RUN mkdir -p data
 
 # Expose port
-EXPOSE 8000
+EXPOSE 3001
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/api/health')" || exit 1
+    CMD wget --no-verbose --tries=1 --spider http://localhost:3001/api/health || exit 1
+
+# Environment variables
+ENV NODE_ENV=production
+ENV PORT=3001
 
 # Run the application
-CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["node", "server/index.js"]

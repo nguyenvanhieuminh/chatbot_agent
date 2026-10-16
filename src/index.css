@@ -1,0 +1,153 @@
+@import 'tailwindcss';
+@import 'katex/dist/katex.min.css';
+
+/* Dark mode dieu khien bang class tren <html> (Tailwind v4) */
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: 'Inter', 'Segoe UI', system-ui, -apple-system, sans-serif;
+  --color-brand-50: #eef4ff;
+  --color-brand-100: #d9e5ff;
+  --color-brand-200: #bcd1ff;
+  --color-brand-300: #8eb2ff;
+  --color-brand-400: #5988fd;
+  --color-brand-500: #345ef7;
+  --color-brand-600: #203eeb;
+  --color-brand-700: #1a2fd7;
+  --color-brand-800: #1c2aae;
+  --color-brand-900: #1d2a89;
+
+  /* Be ngang toi da cua vung doc — khoang 70 ki tu o co chu 17px */
+  --container-measure: 44rem;
+}
+
+/*
+ * HE THONG GIAO DIEN
+ *
+ * Co chu: chi dung thang cua Tailwind — text-xs 12 / sm 14 / base 16 / lg 18 /
+ *   xl 20 / 2xl 24 / 3xl 30 / 4xl 36. Khong dat co le kieu text-[11px].
+ *   Than bai hoc dung .reading (17px) vi doc lau can lon hon UI.
+ *
+ * Bo goc: chi ba muc — rounded-md cho nhan/chip, rounded-lg cho nut va o nhap,
+ *   rounded-xl cho panel. Khong dung 2xl / 3xl nua.
+ *
+ * Mau: brand la mau nhan duy nhat cua giao dien. Mau cua mon hoc chi duoc
+ *   dung o dang diem nho (dot) hoac nhan, khong to kin ca khoi. Xanh / vang /
+ *   do chi dung khi mang y nghia (dung, luu y, sai).
+ *
+ * Vien: dung it. Phan cap bang khoang trang va co chu truoc, roi moi den vien.
+ */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-white text-slate-700 antialiased;
+  @apply dark:bg-slate-950 dark:text-slate-300;
+}
+
+/* Thanh cuon gon gang */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-slate-300 dark:bg-slate-700;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-slate-400 dark:bg-slate-600;
+}
+
+/* Cong thuc KaTeX dai tren mobile thi cho cuon ngang thay vi tran trang */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 2px 0;
+}
+
+/* Khung noi dung co vien. Nhe hon truoc: bo goc nho hon, khong do bong. */
+@utility card {
+  @apply rounded-xl border border-slate-200 bg-white;
+  @apply dark:border-slate-800 dark:bg-slate-900;
+}
+
+/* Gioi han do dong cho vung doc — khong de dong chu dai qua 70 ki tu. */
+@utility measure {
+  max-width: var(--container-measure);
+}
+
+/* Than bai hoc: lon hon chu giao dien vi doc lau. */
+@utility reading {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+}
+
+/* Nhan phu chu hoa — thay cho cac cho truoc day dung text-[11px] roi rac. */
+@utility label {
+  @apply text-xs font-semibold uppercase tracking-wider text-slate-500;
+  @apply dark:text-slate-400;
+}
+
+@utility focus-ring {
+  @apply outline-none focus-visible:ring-2 focus-visible:ring-brand-500 focus-visible:ring-offset-2;
+  @apply dark:focus-visible:ring-offset-slate-950;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.35s ease-out both;
+}
+
+@keyframes pop {
+  0% {
+    transform: scale(0.96);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pop {
+  animation: pop 0.18s ease-out both;
+}
+
+/* Hieu ung lat the flashcard */
+.flip-scene {
+  perspective: 1400px;
+}
+.flip-card {
+  transform-style: preserve-3d;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.flip-card.is-flipped {
+  transform: rotateY(180deg);
+}
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-face-back {
+  transform: rotateY(180deg);
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+}

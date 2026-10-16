@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python main.py)",
+      "Bash(npm run *)",
+      "Bash(ls /Users/m1pro/Documents/web/src/components/ | head -15)",
+      "Read(//Users/m1pro/Documents/web/src/components/**)",
+      "Bash(curl -s http://localhost:3001/api/health)",
+      "Bash(rm -rf node_modules package-lock.json)",
+      "Bash(npm install *)",
+      "Bash(curl -s http://localhost:5173)",
+      "Bash(rm -rf main.py math_main.py templates/ tests/ requirements*.txt pyproject.toml .pre-commit-config.yaml Makefile)",
+      "Bash(mv pathvn-app/* . && mv pathvn-app/.gitignore .gitignore.pathvn 2>/dev/null || true && rm -rf pathvn-app && ls -la)"
+    ],
+    "additionalDirectories": [
+      "/Users/m1pro/Documents/web_study",
+      "/Users/m1pro/Documents/web_study/pathvn-app"
+    ]
+  }
+}
