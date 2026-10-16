@@ -3,12 +3,14 @@ FROM node:22-alpine AS builder
 
 WORKDIR /app
 
+# Install build dependencies for better-sqlite3
+RUN apk add --no-cache python3 make g++
+
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm ci --only=production && \
-    npm cache clean --force
+# Install ALL dependencies (including devDependencies for build)
+RUN npm ci
 
 # Copy source code
 COPY . .
@@ -16,15 +18,22 @@ COPY . .
 # Build frontend
 RUN npm run build
 
+# Install production dependencies only in a clean folder
+RUN npm ci --only=production --ignore-scripts
+
+# Rebuild better-sqlite3 for production
+RUN npm rebuild better-sqlite3
+
 # Production stage
 FROM node:22-alpine
 
 WORKDIR /app
 
-# Copy package files and install production dependencies only
+# Copy package files
 COPY package*.json ./
-RUN npm ci --only=production && \
-    npm cache clean --force
+
+# Copy production node_modules from builder
+COPY --from=builder /app/node_modules ./node_modules
 
 # Copy built frontend from builder
 COPY --from=builder /app/dist ./dist
