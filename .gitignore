@@ -6,11 +6,9 @@ __pycache__/
 .Python
 build/
 develop-eggs/
-dist/
 downloads/
 eggs/
 .eggs/
-lib/
 lib64/
 parts/
 sdist/
@@ -19,6 +17,9 @@ wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Allow src/lib/ for JavaScript project
+!src/lib/
 
 # Virtual Environment
 venv/
