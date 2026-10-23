@@ -1,5 +1,5 @@
 # Multi-stage build for PathVN (React + Vite + Express)
-FROM node:22-alpine AS builder
+FROM node:25-alpine AS builder
 
 WORKDIR /app
 
@@ -25,7 +25,7 @@ RUN npm ci --only=production --ignore-scripts
 RUN npm rebuild better-sqlite3
 
 # Production stage
-FROM node:22-alpine
+FROM node:25-alpine
 
 WORKDIR /app
 
